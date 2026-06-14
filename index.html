@@ -1,30 +1,536 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Aryel Leonard | Data Analyst Portfolio</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aryel Leonard | Data Analyst Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #1e1e2e;
+      --accent: #7c6af7;
+      --accent2: #c4b5fd;
+      --white: #f0eff8;
+      --muted: #7878a0;
+      --text: #d4d3e8;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 6vw;
+      background: rgba(10,10,15,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .logo em { font-style: italic; color: var(--accent2); }
+    nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    nav a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 0.5rem 1.2rem;
+      font-weight: 500 !important;
+      transition: opacity 0.2s !important;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10rem 6vw 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(124,106,247,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(124,106,247,0.12);
+      border: 1px solid rgba(124,106,247,0.3);
+      color: var(--accent2);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      margin-bottom: 2rem;
+      width: fit-content;
+    }
+    .hero-badge::before { content: '◆'; font-size: 0.5rem; }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      line-height: 1.0;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.02em;
+    }
+    h1 em { font-style: italic; color: var(--accent2); }
+    .hero-sub-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    .hero-desc {
+      color: var(--text);
+      max-width: 52ch;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .hero-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .pill {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.9rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--surface);
+      letter-spacing: 0.04em;
+    }
+    .pill.active { border-color: var(--accent); color: var(--accent2); background: rgba(124,106,247,0.08); }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 0.9rem 2rem;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.9rem;
+      padding: 0.9rem 2rem;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent2); }
+
+    /* SCROLL INDICATOR */
+    .scroll-line {
+      position: absolute;
+      bottom: 3rem;
+      left: 6vw;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .scroll-line::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* SECTIONS */
+    section { padding: 7rem 6vw; border-top: 1px solid var(--border); }
+    .section-header { margin-bottom: 3.5rem; }
+    .label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      font-weight: 500;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .label::after { content: ''; display: block; width: 3rem; height: 1px; background: var(--accent); opacity: 0.5; }
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    h2 em { font-style: italic; color: var(--accent2); }
+
+    /* FEATURED PROJECT */
+    .featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .featured-img {
+      position: relative;
+      overflow: hidden;
+    }
+    .featured-img img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      filter: grayscale(30%);
+      transition: filter 0.3s;
+    }
+    .featured-img:hover img { filter: grayscale(0%); }
+    .featured-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--accent);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    .featured-content {}
+    .featured-tag {
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .featured-tag::before { content: '★'; font-size: 0.6rem; }
+    .featured-content h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .featured-content p { color: var(--text); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+    /* PROJECT GRID */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .project-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      filter: grayscale(40%);
+      transition: filter 0.3s;
+    }
+    .project-card:hover img { filter: grayscale(0%); }
+    .project-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+    .project-type { font-size: 0.68rem; color: var(--accent2); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; }
+    .project-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--white); line-height: 1.3; }
+    .project-card p { color: var(--muted); font-size: 0.85rem; flex: 1; }
+    .project-link { font-size: 0.78rem; color: var(--accent2); letter-spacing: 0.06em; margin-top: 0.5rem; display: flex; align-items: center; gap: 0.3rem; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .about-text p { color: var(--text); margin-bottom: 1rem; font-size: 0.95rem; }
+    .about-text p strong { color: var(--white); font-weight: 500; }
+    .skills-list { margin-top: 0.5rem; }
+    .skill-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+    .skill-row:last-child { border-bottom: none; }
+    .skill-name { color: var(--white); font-weight: 400; }
+    .skill-tags-mini { display: flex; gap: 0.4rem; }
+    .mini-tag {
+      font-size: 0.68rem;
+      padding: 0.2rem 0.5rem;
+      background: rgba(124,106,247,0.1);
+      border: 1px solid rgba(124,106,247,0.2);
+      color: var(--accent2);
+    }
+
+    /* CONTACT */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-text p { color: var(--text); margin-bottom: 2rem; font-size: 0.95rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .contact-item:hover { border-color: var(--accent); color: var(--white); }
+    .contact-icon { font-size: 1.2rem; width: 2rem; text-align: center; }
+    .contact-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.1rem; }
+    .contact-value { color: var(--white); font-size: 0.88rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 6vw;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--white); }
+    .footer-logo em { color: var(--accent2); font-style: italic; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .featured { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Aryel Leonard Portfolio</h1>
-    <p>Mathematics Major (Data Science & Statistics) | SQL | Python | Tableau | Excel</p>
-    <h2>Featured Project</h2>
-    <h3>Disease Prevalence Forecasting Using Time Series Analysis</h3>
-    <p>Developed forecasting models using trend, seasonality, ACF, and PACF analysis.</p>
 
-    <h2>Projects</h2>
-    <ul>
-        <li>Zoo Dataset Classification & Clustering</li>
-        <li>SQL Database Analysis</li>
-        <li>Interactive Tableau Dashboard</li>
-        <li>Data Analysis & Classification</li>
-    </ul>
+<nav>
+  <a href="#" class="logo">Aryel <em>Leonard</em></a>
+  <ul>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://github.com/Aryel1313/Aryel-Leonard.github.io" target="_blank" class="nav-cta">GitHub</a></li>
+  </ul>
+</nav>
 
-    <h2>About Me</h2>
-    <p>
-    Mathematics major with a concentration in Data Science and Statistics,
-    interested in machine learning, forecasting, business intelligence,
-    statistical modeling, and data visualization.
-    </p>
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-badge">Open to opportunities</span>
+  <h1>Data <em>Analyst</em></h1>
+  <p class="hero-sub-title">Mathematics · Data Science · Statistics</p>
+  <p class="hero-desc">Transforming complex datasets into actionable insights. Specializing in machine learning, predictive analytics, and statistical modeling at Western Illinois University.</p>
+  <div class="hero-skills">
+    <span class="pill active">Python</span>
+    <span class="pill active">SQL</span>
+    <span class="pill active">R</span>
+    <span class="pill">Tableau</span>
+    <span class="pill">Machine Learning</span>
+    <span class="pill">Excel</span>
+    <span class="pill">Power BI</span>
+  </div>
+  <div class="hero-btns">
+    <a href="#projects" class="btn-primary">View Projects</a>
+    <a href="#contact" class="btn-outline">Get in Touch</a>
+  </div>
+  <div class="scroll-line">Scroll to explore</div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <p class="label">Work</p>
+    <h2>Featured <em>Project</em></h2>
+  </div>
+
+  <div class="featured">
+    <div class="featured-img">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="Disease Forecasting"/>
+    </div>
+    <div class="featured-content">
+      <p class="featured-tag">Featured Project</p>
+      <h3>Disease Prevalence Forecasting Using Time Series Analysis</h3>
+      <p>Developed forecasting models for disease prevalence using time series analysis. Conducted exploratory data analysis to identify trend, seasonality, autocorrelation (ACF), and partial autocorrelation (PACF). Evaluated forecasting performance through statistical diagnostics and predictive accuracy metrics.</p>
+      <a href="https://github.com/Aryel1313/Aryel-Leonard.github.io" target="_blank" class="btn-primary" style="width:fit-content">View Project →</a>
+    </div>
+  </div>
+
+  <div class="projects-grid">
+    <a class="project-card" href="https://github.com/Aryel1313/Aryel-Leonard.github.io" target="_blank">
+      <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=600&q=80" alt="Zoo Classification"/>
+      <div class="project-body">
+        <span class="project-type">Machine Learning</span>
+        <h3>Zoo Dataset Classification & Clustering</h3>
+        <p>Applied K-Means and Hierarchical Clustering to classify 100 animal observations across 16 attributes using unsupervised machine learning.</p>
+        <span class="project-link">View Project →</span>
+      </div>
+    </a>
+    <a class="project-card" href="https://github.com/Aryel1313/Aryel-Leonard.github.io" target="_blank">
+      <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&q=80" alt="SQL Analytics"/>
+      <div class="project-body">
+        <span class="project-type">SQL Analytics</span>
+        <h3>SQL Database Analysis</h3>
+        <p>Designed and queried relational databases using SQL. Created joins, views, aggregations, and analytical reports to uncover business insights.</p>
+        <span class="project-link">View Project →</span>
+      </div>
+    </a>
+    <a class="project-card" href="https://github.com/Aryel1313/Aryel-Leonard.github.io" target="_blank">
+      <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?w=600&q=80" alt="Tableau Dashboard"/>
+      <div class="project-body">
+        <span class="project-type">Data Visualization</span>
+        <h3>Interactive Tableau Dashboard</h3>
+        <p>Built interactive dashboards featuring KPI tracking, trend analysis, and dynamic filtering to support business intelligence.</p>
+        <span class="project-link">View Project →</span>
+      </div>
+    </a>
+    <a class="project-card" href="https://github.com/Aryel1313/Aryel-Leonard.github.io" target="_blank">
+      <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80" alt="Python Analytics"/>
+      <div class="project-body">
+        <span class="project-type">Python Analytics</span>
+        <h3>Data Analysis & Classification</h3>
+        <p>Applied statistical analysis, classification, and predictive modeling using Pandas, NumPy, Scikit-Learn, Matplotlib, and Seaborn.</p>
+        <span class="project-link">View Project →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <p class="label">About</p>
+    <h2>The <em>Analyst</em> Behind the Data</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I am a <strong>Mathematics major</strong> with a concentration in Data Science and Statistics at Western Illinois University, with minors in <strong>Business Analytics and Psychology.</strong></p>
+      <p>My interests include machine learning, predictive analytics, forecasting, business intelligence, statistical modeling, and data visualization. I enjoy transforming complex datasets into actionable insights that support real-world decision making.</p>
+      <p>I believe the most powerful data work sits at the intersection of <strong>technical rigor and human curiosity</strong> — understanding not just what the numbers say, but why they matter.</p>
+    </div>
+    <div class="skills-list">
+      <div class="skill-row">
+        <span class="skill-name">Programming</span>
+        <div class="skill-tags-mini">
+          <span class="mini-tag">Python</span><span class="mini-tag">R</span><span class="mini-tag">SQL</span><span class="mini-tag">Java</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Data Analysis</span>
+        <div class="skill-tags-mini">
+          <span class="mini-tag">Pandas</span><span class="mini-tag">NumPy</span><span class="mini-tag">SciPy</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Machine Learning</span>
+        <div class="skill-tags-mini">
+          <span class="mini-tag">Classification</span><span class="mini-tag">Clustering</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Visualization</span>
+        <div class="skill-tags-mini">
+          <span class="mini-tag">Tableau</span><span class="mini-tag">Power BI</span><span class="mini-tag">Seaborn</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Database</span>
+        <div class="skill-tags-mini">
+          <span class="mini-tag">Oracle SQL</span><span class="mini-tag">SQL Server</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Tools</span>
+        <div class="skill-tags-mini">
+          <span class="mini-tag">Excel</span><span class="mini-tag">Git</span><span class="mini-tag">Jupyter</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <p class="label">Contact</p>
+    <h2>Let's <em>Connect</em></h2>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-text">
+      <p>I'm currently open to internship and entry-level data analyst opportunities. Whether you have a project, a question, or just want to connect — feel free to reach out.</p>
+      <a href="https://github.com/Aryel1313/Aryel-Leonard.github.io" target="_blank" class="btn-primary">View GitHub →</a>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:aryellleonard@gmail.com" class="contact-item">
+        <span class="contact-icon">✉</span>
+        <div>
+          <span class="contact-label">Email</span>
+          <span class="contact-value">aryellleonard@gmail.com</span>
+        </div>
+      </a>
+      <a href="http://www.linkedin.com/in/aryel-leonard" target="_blank" class="contact-item">
+        <span class="contact-icon">in</span>
+        <div>
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">aryel-leonard</span>
+        </div>
+      </a>
+      <a href="https://github.com/Aryel1313/Aryel-Leonard.github.io" target="_blank" class="contact-item">
+        <span class="contact-icon">⌥</span>
+        <div>
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">Aryel1313</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">Aryel <em>Leonard</em></span>
+  <span>© 2026 · Data Analyst Portfolio</span>
+</footer>
+
 </body>
 </html>
